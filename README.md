@@ -39,9 +39,16 @@ python scrape_supernatural_music.py
 | `scrape_supernatural_music.py` | Main scraping script |
 | `requirements.txt` | Python dependencies |
 | `supernatural_complete_soundtrack.csv` | Reference dataset (included) |
+| [SCRAPER_IMPROVEMENTS_PLAN.md](SCRAPER_IMPROVEMENTS_PLAN.md) | **Priority:** types, config-driven paths, Pydantic I/O |
 | `SPOTIFY_ENRICHMENT_PLAN.md` | Planned Spotify enrichment roadmap |
 
 ## Roadmap
+
+**Current focus (do first):**
+
+- [SCRAPER_IMPROVEMENTS_PLAN.md](SCRAPER_IMPROVEMENTS_PLAN.md) - Type annotations, config-driven architecture, Pydantic for structured I/O
+
+**Then:**
 
 - [SPOTIFY_ENRICHMENT_PLAN.md](SPOTIFY_ENRICHMENT_PLAN.md) - Presence matching, taxonomy tagging
 - [PLAYLIST_GENERATION_PLAN.md](PLAYLIST_GENERATION_PLAN.md) - Playlists by genre, mood, and uber playlist
