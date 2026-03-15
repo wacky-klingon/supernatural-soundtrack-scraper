@@ -29,5 +29,6 @@ env/
 Thumbs.db
 .DS_Store
 
-# Regenerable output (binary)
+# Regenerable output
 *.xlsx
+supernatural_soundtrack.csv

@@ -1,0 +1,5 @@
+# Scraper config: API, page, and output paths. Env vars override these when set.
+api_url: "https://supernatural.fandom.com/api.php"
+page_title: "Supernatural_Music"
+output_csv: "supernatural_soundtrack.csv"
+output_xlsx: "supernatural_soundtrack.xlsx"
