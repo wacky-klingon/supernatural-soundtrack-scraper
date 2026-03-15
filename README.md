@@ -43,7 +43,8 @@ python scrape_supernatural_music.py
 
 ## Roadmap
 
-Planned Spotify enrichment (presence matching, taxonomy tagging) is documented in [SPOTIFY_ENRICHMENT_PLAN.md](SPOTIFY_ENRICHMENT_PLAN.md).
+- [SPOTIFY_ENRICHMENT_PLAN.md](SPOTIFY_ENRICHMENT_PLAN.md) - Presence matching, taxonomy tagging
+- [PLAYLIST_GENERATION_PLAN.md](PLAYLIST_GENERATION_PLAN.md) - Playlists by genre, mood, and uber playlist
 
 ## Contributing
 

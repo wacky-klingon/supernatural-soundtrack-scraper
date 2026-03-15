@@ -148,6 +148,7 @@ tags, tag_source
 2. Implement `spotify_presence_matcher.py` (Step 2)
 3. Implement `spotify_taxonomy_tagger.py` (Step 3)
 4. Orchestrate via `supernatural_spotify_enricher.py` or CLI
+5. Implement playlist generation (see [PLAYLIST_GENERATION_PLAN.md](PLAYLIST_GENERATION_PLAN.md))
 
 ---
 
