@@ -1,5 +1,7 @@
 # Scraper Improvements Plan (Priority)
 
+**Status: Completed.**
+
 Addresses code-quality and architecture gaps in the main scraper so it aligns with project rules before extending with Spotify enrichment and playlist generation.
 
 ---
@@ -101,6 +103,6 @@ Addresses code-quality and architecture gaps in the main scraper so it aligns wi
 
 ## Links
 
-- [README](README.md) - Project overview and roadmap
-- [SPOTIFY_ENRICHMENT_PLAN.md](SPOTIFY_ENRICHMENT_PLAN.md) - Enrichment (after scraper improvements)
-- [PLAYLIST_GENERATION_PLAN.md](PLAYLIST_GENERATION_PLAN.md) - Playlist generation (after enrichment)
+- [README](../README.md) - Project overview and roadmap
+- [SPOTIFY_ENRICHMENT_PLAN.md](../SPOTIFY_ENRICHMENT_PLAN.md) - Enrichment (after scraper improvements)
+- [PLAYLIST_GENERATION_PLAN.md](../PLAYLIST_GENERATION_PLAN.md) - Playlist generation (after enrichment)

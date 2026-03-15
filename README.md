@@ -69,7 +69,7 @@ scrape
 | `config/scraper.yaml` | Scraper config (API URL, page title, output paths) |
 | `pyproject.toml` | Poetry project, dependencies, and `scrape` script entry point |
 | `poetry.lock` | Locked dependency versions (commit this) |
-| [SCRAPER_IMPROVEMENTS_PLAN.md](SCRAPER_IMPROVEMENTS_PLAN.md) | Types, config-driven paths, Pydantic I/O |
+| [docs/SCRAPER_IMPROVEMENTS_PLAN.md](docs/SCRAPER_IMPROVEMENTS_PLAN.md) | Types, config-driven paths, Pydantic I/O (completed) |
 | `SPOTIFY_ENRICHMENT_PLAN.md` | Planned Spotify enrichment roadmap |
 
 ## Tests
@@ -82,7 +82,7 @@ poetry run pytest tests/
 
 **Current focus (do first):**
 
-- [SCRAPER_IMPROVEMENTS_PLAN.md](SCRAPER_IMPROVEMENTS_PLAN.md) - Type annotations, config-driven architecture, Pydantic for structured I/O
+- [docs/SCRAPER_IMPROVEMENTS_PLAN.md](docs/SCRAPER_IMPROVEMENTS_PLAN.md) - Type annotations, config-driven architecture, Pydantic for structured I/O (completed)
 
 **Then:**
 
