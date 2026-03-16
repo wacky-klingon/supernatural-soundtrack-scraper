@@ -1,0 +1,42 @@
+# Taxonomy for Spotify enrichment (Step 3). Source: Spotify genre seeds + custom moods.
+# Genres: matched from Spotify artist.genres (substring). Moods: from audio-feature thresholds.
+
+genres:
+  - rock
+  - classic_rock
+  - metal
+  - blues
+  - country
+  - southern_rock
+  - alternative
+  - punk
+  - hard_rock
+
+moods:
+  - party           # high energy, danceable
+  - sad             # low valence, melancholic
+  - driving         # road-trip, highway
+  - sipping_whiskey # slow, reflective, bar vibe
+  - brooding        # dark, intense
+  - triumphant      # anthemic, climactic
+
+# Optional: thresholds for mood tags from Spotify audio features (0-1 except tempo in BPM).
+# A track gets the mood tag if all listed conditions are met.
+mood_rules:
+  party:
+    energy_min: 0.7
+    danceability_min: 0.5
+  sad:
+    valence_max: 0.3
+  driving:
+    energy_min: 0.6
+    tempo_min: 110
+  sipping_whiskey:
+    energy_max: 0.4
+    acousticness_min: 0.3
+  brooding:
+    energy_min: 0.4
+    valence_max: 0.5
+  triumphant:
+    energy_min: 0.6
+    valence_min: 0.5

@@ -53,6 +53,16 @@ scrape
 
 **Outputs:** CSV and Excel files at the paths set in `config/scraper.yaml` (default: `supernatural_soundtrack.csv`, `supernatural_soundtrack.xlsx`).
 
+### Spotify enrichment
+
+Requires a soundtrack CSV (e.g. `supernatural_complete_soundtrack.csv`). Set `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` in `.env` (see `.env.example`). Paths are in `config/enrichment.yaml` (override with `INPUT_CSV`, `OUTPUT_JSON`, `OUTPUT_CSV`, `TAXONOMY_PATH`).
+
+```bash
+poetry run enrich
+```
+
+Writes JSON (source of truth, with genres/tags arrays) and a derived CSV (scalar columns only). Idempotent: re-runs skip (song, artist) pairs already in the output. See [SPOTIFY_ENRICHMENT.md](SPOTIFY_ENRICHMENT.md).
+
 ## What It Does
 
 - Calls the MediaWiki API
@@ -64,13 +74,15 @@ scrape
 
 | Path | Description |
 |------|-------------|
-| `supernatural_soundtrack_scraper/` | Package: `core` (model, fetch, parse), `utils` (config, export), `cli`, `__main__.py` |
+| `supernatural_soundtrack_scraper/` | Package: `core`, `utils`, `cli`, `spotify_enrichment` (presence matcher, taxonomy tagger, enricher) |
 | `tests/` | Tests: `test_core.py`, `test_utils.py` |
 | `config/scraper.yaml` | Scraper config (API URL, page title, output paths) |
-| `pyproject.toml` | Poetry project, dependencies, and `scrape` script entry point |
+| `config/enrichment.yaml` | Enrichment paths (input CSV, output JSON/CSV, taxonomy) |
+| `config/taxonomy.yaml` | Taxonomy: genres, moods, mood rules for tagging |
+| `pyproject.toml` | Poetry project, scripts: `scrape`, `enrich` |
 | `poetry.lock` | Locked dependency versions (commit this) |
 | [docs/SCRAPER_IMPROVEMENTS_PLAN.md](docs/SCRAPER_IMPROVEMENTS_PLAN.md) | Types, config-driven paths, Pydantic I/O (completed) |
-| `SPOTIFY_ENRICHMENT_PLAN.md` | Planned Spotify enrichment roadmap |
+| `SPOTIFY_ENRICHMENT.md` | Spotify enrichment design, pipeline, and data model |
 
 ## Tests
 
@@ -86,7 +98,7 @@ poetry run pytest tests/
 
 **Then:**
 
-- [SPOTIFY_ENRICHMENT_PLAN.md](SPOTIFY_ENRICHMENT_PLAN.md) - Presence matching, taxonomy tagging
+- [SPOTIFY_ENRICHMENT.md](SPOTIFY_ENRICHMENT.md) - Presence matching, taxonomy tagging
 - [PLAYLIST_GENERATION_PLAN.md](PLAYLIST_GENERATION_PLAN.md) - Playlists by genre, mood, and uber playlist
 
 ## Contributing

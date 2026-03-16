@@ -13,6 +13,19 @@ files = [
 ]
 
 [[package]]
+name = "async-timeout"
+version = "5.0.1"
+description = "Timeout context manager for asyncio programs"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+markers = "python_full_version < \"3.11.3\""
+files = [
+    {file = "async_timeout-5.0.1-py3-none-any.whl", hash = "sha256:39e3809566ff85354557ec2398b55e096c8364bacac9405a7a1fa429e77fe76c"},
+    {file = "async_timeout-5.0.1.tar.gz", hash = "sha256:d9321a7a3d5a6a5e187e824d2fa0793ce379a202935782d555d6e9d2735677d3"},
+]
+
+[[package]]
 name = "certifi"
 version = "2026.2.25"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -935,6 +948,52 @@ files = [
 ]
 
 [[package]]
+name = "redis"
+version = "7.0.1"
+description = "Python client for Redis database and key-value store"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+markers = "python_version < \"3.11\""
+files = [
+    {file = "redis-7.0.1-py3-none-any.whl", hash = "sha256:4977af3c7d67f8f0eb8b6fec0dafc9605db9343142f634041fb0235f67c0588a"},
+    {file = "redis-7.0.1.tar.gz", hash = "sha256:c949df947dca995dc68fdf5a7863950bf6df24f8d6022394585acc98e81624f1"},
+]
+
+[package.dependencies]
+async-timeout = {version = ">=4.0.3", markers = "python_full_version < \"3.11.3\""}
+
+[package.extras]
+circuit-breaker = ["pybreaker (>=1.4.0)"]
+hiredis = ["hiredis (>=3.2.0)"]
+jwt = ["pyjwt (>=2.9.0)"]
+ocsp = ["cryptography (>=36.0.1)", "pyopenssl (>=20.0.1)", "requests (>=2.31.0)"]
+
+[[package]]
+name = "redis"
+version = "7.3.0"
+description = "Python client for Redis database and key-value store"
+optional = false
+python-versions = ">=3.10"
+groups = ["main"]
+markers = "python_version >= \"3.11\""
+files = [
+    {file = "redis-7.3.0-py3-none-any.whl", hash = "sha256:9d4fcb002a12a5e3c3fbe005d59c48a2cc231f87fbb2f6b70c2d89bb64fec364"},
+    {file = "redis-7.3.0.tar.gz", hash = "sha256:4d1b768aafcf41b01022410b3cc4f15a07d9b3d6fe0c66fc967da2c88e551034"},
+]
+
+[package.dependencies]
+async-timeout = {version = ">=4.0.3", markers = "python_full_version < \"3.11.3\""}
+
+[package.extras]
+circuit-breaker = ["pybreaker (>=1.4.0)"]
+hiredis = ["hiredis (>=3.2.0)"]
+jwt = ["pyjwt (>=2.9.0)"]
+ocsp = ["cryptography (>=36.0.1)", "pyopenssl (>=20.0.1)", "requests (>=2.31.0)"]
+otel = ["opentelemetry-api (>=1.39.1)", "opentelemetry-exporter-otlp-proto-http (>=1.39.1)", "opentelemetry-sdk (>=1.39.1)"]
+xxhash = ["xxhash (>=3.6.0,<3.7.0)"]
+
+[[package]]
 name = "requests"
 version = "2.32.5"
 description = "Python HTTP for Humans."
@@ -967,6 +1026,27 @@ files = [
     {file = "six-1.17.0-py2.py3-none-any.whl", hash = "sha256:4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"},
     {file = "six-1.17.0.tar.gz", hash = "sha256:ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81"},
 ]
+
+[[package]]
+name = "spotipy"
+version = "2.26.0"
+description = "A light weight Python library for the Spotify Web API"
+optional = false
+python-versions = ">3.8"
+groups = ["main"]
+files = [
+    {file = "spotipy-2.26.0-py3-none-any.whl", hash = "sha256:2726854ddfa0e5624aada592e737832ec75bdc00ae12c102779f8bd995329d49"},
+    {file = "spotipy-2.26.0.tar.gz", hash = "sha256:df6a25d8209072efa8cea165608ee644884e3804f8762b6d8e06ca1a5c7f8a63"},
+]
+
+[package.dependencies]
+redis = ">=3.5.3"
+requests = ">=2.25.0"
+urllib3 = ">=1.26.0"
+
+[package.extras]
+memcache = ["pymemcache (>=3.5.2)"]
+test = ["autopep8 (>=2.3.2)", "flake8 (>=7.3.0)", "flake8-use-fstring (>=1.4)", "isort (>=7.0.0)"]
 
 [[package]]
 name = "tomli"
@@ -1088,4 +1168,4 @@ zstd = ["backports-zstd (>=1.0.0) ; python_version < \"3.14\""]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.9"
-content-hash = "4c5286a12b530606c54bea40f9ee61631bf8877049a1ae7ff7d3d14715179c2b"
+content-hash = "b3aa4dd0bf5c0c57a59e7366d80b2e54531027bf138f23c337fedbae21daef5e"

@@ -1,6 +1,6 @@
 # Playlist Generation Plan
 
-Extends the Spotify enrichment pipeline. After classification and taxonomy tagging (Steps 1-3 of SPOTIFY_ENRICHMENT_PLAN.md), generate playlists by genre, by mood, and one uber playlist.
+Extends the Spotify enrichment pipeline. After classification and taxonomy tagging (Steps 1-3 of SPOTIFY_ENRICHMENT.md), generate playlists by genre, by mood, and one uber playlist.
 
 ---
 

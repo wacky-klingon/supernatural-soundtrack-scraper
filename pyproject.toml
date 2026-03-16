@@ -8,6 +8,7 @@ packages = [{ include = "supernatural_soundtrack_scraper" }]
 
 [tool.poetry.scripts]
 scrape = "supernatural_soundtrack_scraper.__main__:main"
+enrich = "supernatural_soundtrack_scraper.spotify_enrichment.enricher:main"
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -16,6 +17,7 @@ pandas = "*"
 openpyxl = "*"
 pydantic = "*"
 pyyaml = "*"
+spotipy = "*"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "*"

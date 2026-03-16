@@ -104,5 +104,5 @@ Addresses code-quality and architecture gaps in the main scraper so it aligns wi
 ## Links
 
 - [README](../README.md) - Project overview and roadmap
-- [SPOTIFY_ENRICHMENT_PLAN.md](../SPOTIFY_ENRICHMENT_PLAN.md) - Enrichment (after scraper improvements)
+- [SPOTIFY_ENRICHMENT.md](../SPOTIFY_ENRICHMENT.md) - Enrichment (after scraper improvements)
 - [PLAYLIST_GENERATION_PLAN.md](../PLAYLIST_GENERATION_PLAN.md) - Playlist generation (after enrichment)

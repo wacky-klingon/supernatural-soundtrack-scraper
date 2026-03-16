@@ -1,0 +1,7 @@
+# Spotify enrichment: paths. Env vars override when set.
+# SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET must be set in .env or environment.
+
+input_csv: "supernatural_complete_soundtrack.csv"
+output_json: "Spotify_supernatural.json"
+output_csv: "Spotify_supernatural.csv"
+taxonomy_path: "config/taxonomy.yaml"
