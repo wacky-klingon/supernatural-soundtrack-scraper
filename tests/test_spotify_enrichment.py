@@ -10,6 +10,7 @@ from unittest.mock import MagicMock, patch
 
 import pandas as pd
 import pytest
+from spotipy.exceptions import SpotifyException
 
 from supernatural_soundtrack_scraper.spotify_enrichment.config import (
     load_enrichment_config,
@@ -253,6 +254,39 @@ def test_match_track_release_date_year_only() -> None:
     }
     result = match_track(sp, "S", "Artist")
     assert result["release_year"] == "1992"
+
+
+def test_match_track_spotify_403_premium_raises_runtime_error() -> None:
+    sp = MagicMock()
+    exc = SpotifyException(
+        http_status=403,
+        code=-1,
+        msg="Active premium subscription required for the owner of the app. When the subscription status changes, it can take a few hours before requests are allowed again.",
+    )
+    sp.search.side_effect = exc
+    with pytest.raises(RuntimeError):
+        match_track(sp, "Escort Service", "David Mann and Emanuel Kallins")
+
+
+def test_match_track_spotify_500_logs_and_returns_not_present(monkeypatch) -> None:
+    sp = MagicMock()
+    exc = SpotifyException(
+        http_status=500,
+        code=-1,
+        msg="Internal server error",
+    )
+    sp.search.side_effect = exc
+
+    printed: list[str] = []
+
+    def fake_print(*args: object, **kwargs: object) -> None:
+        if args:
+            printed.append(str(args[0]))
+
+    monkeypatch.setattr("builtins.print", fake_print)
+    result = match_track(sp, "Song", "Artist")
+    assert result["spotify_present"] is False
+    assert any("Spotify API error (500)" in m for m in printed)
 
 
 # --- Taxonomy tagger (mocked Spotify) ---

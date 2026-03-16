@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from spotipy import Spotify
+from spotipy.exceptions import SpotifyException
 from spotipy.oauth2 import SpotifyClientCredentials
 
 
@@ -38,7 +39,21 @@ def match_track(sp: Spotify, song: str, artist: str) -> dict[str, Any]:
     query = f'track:"{song}" artist:{artist}'
     try:
         resp = sp.search(q=query, type="track", limit=5)
-    except Exception:
+    except SpotifyException as exc:
+        msg = (exc.msg or "").lower()
+        # For the premium-subscription 403 case, stop the enrichment run.
+        if exc.http_status == 403 and "active premium subscription required" in msg:
+            raise RuntimeError(
+                "Spotify enrichment requires an active premium subscription for this app. "
+                "The Spotify API returned 403: active premium subscription required."
+            ) from exc
+        # For other 4xx/5xx errors, log and treat as not present.
+        if 400 <= (exc.http_status or 0) < 600:
+            print(f"Spotify API error ({exc.http_status}): {exc.msg}")
+        return result
+    except Exception as exc:
+        # Unknown error: log and treat as not present.
+        print(f"Unexpected error when calling Spotify search: {exc}")
         return result
 
     items = (resp.get("tracks") or {}).get("items") or []
