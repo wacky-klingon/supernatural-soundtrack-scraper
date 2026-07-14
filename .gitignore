@@ -32,3 +32,6 @@ Thumbs.db
 # Regenerable output
 *.xlsx
 supernatural_soundtrack.csv
+
+# Spotipy token cache
+.cache

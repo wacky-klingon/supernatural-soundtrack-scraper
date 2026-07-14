@@ -4,4 +4,5 @@
 input_csv: "supernatural_complete_soundtrack.csv"
 output_json: "Spotify_supernatural.json"
 output_csv: "Spotify_supernatural.csv"
+metadata_csv: "Spotify_metadata_dump.csv"
 taxonomy_path: "config/taxonomy.yaml"

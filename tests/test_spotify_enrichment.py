@@ -22,6 +22,11 @@ from supernatural_soundtrack_scraper.spotify_enrichment.enricher import (
     _load_input_csv,
     run_enrichment,
 )
+from supernatural_soundtrack_scraper.spotify_enrichment.metadata_dump import (
+    DUMP_COLUMNS,
+    build_dump_rows,
+    dump_metadata,
+)
 from supernatural_soundtrack_scraper.spotify_enrichment.models import (
     EnrichedRecord,
     SoundtrackInputRow,
@@ -115,7 +120,9 @@ def test_enriched_record_to_csv_row_has_all_scalar_columns() -> None:
     keys = list(rec.to_csv_row().keys())
     assert "last_updated" in keys
     assert "album_name" in keys
-    assert len(keys) == 20
+    assert "spotify_track_name" in keys
+    assert "spotify_artist_name" in keys
+    assert len(keys) == 22
 
 
 # --- Config ---
@@ -126,6 +133,7 @@ def test_load_enrichment_config_returns_expected_keys() -> None:
     assert "input_csv" in config
     assert "output_json" in config
     assert "output_csv" in config
+    assert "metadata_csv" in config
     assert "taxonomy_path" in config
     assert "spotify_client_id" in config
     assert "spotify_client_secret" in config
@@ -230,6 +238,7 @@ def test_match_track_valid_response_parses_fields() -> None:
     assert result["spotify_track_id"] == "tid123"
     assert result["spotify_uri"] == "spotify:track:tid123"
     assert result["artist_id"] == "aid456"
+    assert result["spotify_artist_name"] == "AC/DC"
     assert result["album_name"] == "Back In Black"
     assert result["album_release_date"] == "1980-07-25"
     assert result["release_year"] == "1980"
@@ -468,6 +477,97 @@ def test_build_lookup_deduplicates_by_normalized_key() -> None:
     assert lookup[key]["spotify_track_id"] in ("t1", "t2")
 
 
+# --- Metadata dump ---
+
+
+def _dump_record(**overrides: object) -> dict:
+    rec = {
+        "season": 1,
+        "episode_code": "01x01",
+        "song": "Back In Black",
+        "artist": "AC/DC",
+        "spotify_present": True,
+        "spotify_track_id": "tid1",
+        "spotify_uri": "spotify:track:tid1",
+        "spotify_track_name": "Back In Black",
+        "spotify_artist_name": "AC/DC",
+        "match_confidence": 1.0,
+        "album_id": "alid",
+        "album_name": "Back In Black",
+        "album_release_date": "1980-07-25",
+        "release_year": "1980",
+        "artist_id": "aid",
+        "duration_ms": 255000,
+        "genres": ["hard rock", "rock"],
+        "tags": ["rock", "driving"],
+    }
+    rec.update(overrides)
+    return rec
+
+
+def test_build_dump_rows_excludes_not_present() -> None:
+    records = [
+        _dump_record(),
+        _dump_record(song="Obscure Song", spotify_present=False, spotify_track_id=""),
+    ]
+    rows = build_dump_rows(records)
+    assert len(rows) == 1
+    assert rows[0]["song"] == "Back In Black"
+
+
+def test_build_dump_rows_dedupes_by_track_id_keeps_first() -> None:
+    records = [
+        _dump_record(season=1),
+        _dump_record(season=5),
+    ]
+    rows = build_dump_rows(records)
+    assert len(rows) == 1
+
+
+def test_build_dump_rows_flattens_genres_and_tags() -> None:
+    rows = build_dump_rows([_dump_record()])
+    assert rows[0]["genres"] == "hard rock; rock"
+    assert rows[0]["tags"] == "rock; driving"
+
+
+def test_build_dump_rows_empty_genres_gives_empty_string() -> None:
+    rows = build_dump_rows([_dump_record(genres=[], tags=[])])
+    assert rows[0]["genres"] == ""
+    assert rows[0]["tags"] == ""
+
+
+def test_build_dump_rows_present_without_track_id_dedupes_by_song_artist() -> None:
+    records = [
+        _dump_record(spotify_track_id=""),
+        _dump_record(spotify_track_id=""),
+        _dump_record(song="Other Song", spotify_track_id=""),
+    ]
+    rows = build_dump_rows(records)
+    assert len(rows) == 2
+
+
+def test_dump_metadata_missing_json_raises() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        with pytest.raises(FileNotFoundError, match="Run `poetry run enrich` first"):
+            dump_metadata(str(Path(tmp) / "missing.json"), str(Path(tmp) / "out.csv"))
+
+
+def test_dump_metadata_writes_csv_with_expected_columns() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        json_path = Path(tmp) / "enriched.json"
+        out_csv = Path(tmp) / "dump.csv"
+        with open(json_path, "w") as f:
+            json.dump([_dump_record(), _dump_record(spotify_present=False, spotify_track_id="")], f)
+        result = dump_metadata(str(json_path), str(out_csv))
+        assert result == str(out_csv)
+        df = pd.read_csv(out_csv)
+        assert list(df.columns) == DUMP_COLUMNS
+        assert len(df) == 1
+        assert df.iloc[0]["spotify_artist_name"] == "AC/DC"
+        assert df.iloc[0]["genres"] == "hard rock; rock"
+        assert not (Path(tmp) / "dump.csv.tmp").exists()
+
+
 # --- run_enrichment negative flows ---
 
 
@@ -562,6 +662,7 @@ def test_run_enrichment_success_with_mocked_spotify() -> None:
                     {
                         "id": "tid",
                         "uri": "spotify:track:tid",
+                        "name": "Back In Black",
                         "duration_ms": 255000,
                         "artists": [{"id": "aid", "name": "AC/DC"}],
                         "album": {"id": "alid", "name": "Back In Black", "release_date": "1980"},
@@ -585,6 +686,8 @@ def test_run_enrichment_success_with_mocked_spotify() -> None:
         assert len(data) == 1
         assert data[0]["song"] == "Back In Black"
         assert data[0]["spotify_present"] is True
+        assert data[0]["spotify_track_name"] == "Back In Black"
+        assert data[0]["spotify_artist_name"] == "AC/DC"
         assert "genres" in data[0]
         assert "tags" in data[0]
         csv_content = Path(output_csv).read_text()

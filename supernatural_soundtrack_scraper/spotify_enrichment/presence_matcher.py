@@ -18,13 +18,16 @@ def create_spotify_client(client_id: str, client_secret: str) -> Spotify:
 def match_track(sp: Spotify, song: str, artist: str) -> dict[str, Any]:
     """
     Search Spotify for track + artist. Return enrichment dict for Step 2 fields.
-    Keys: spotify_present, spotify_track_id, spotify_uri, match_confidence,
-    album_id, album_name, album_release_date, release_year, artist_id, duration_ms.
+    Keys: spotify_present, spotify_track_id, spotify_uri, spotify_track_name,
+    spotify_artist_name, match_confidence, album_id, album_name,
+    album_release_date, release_year, artist_id, duration_ms.
     """
     result: dict[str, Any] = {
         "spotify_present": False,
         "spotify_track_id": "",
         "spotify_uri": "",
+        "spotify_track_name": "",
+        "spotify_artist_name": "",
         "match_confidence": 0.0,
         "album_id": "",
         "album_name": "",
@@ -79,6 +82,7 @@ def match_track(sp: Spotify, song: str, artist: str) -> dict[str, Any]:
     result["spotify_present"] = True
     result["spotify_track_id"] = best.get("id") or ""
     result["spotify_uri"] = best.get("uri") or ""
+    result["spotify_track_name"] = best.get("name") or ""
     result["match_confidence"] = 1.0 if (best_artist_name == artist_lower) else 0.8
 
     album = best.get("album") or {}
@@ -91,6 +95,7 @@ def match_track(sp: Spotify, song: str, artist: str) -> dict[str, Any]:
     artists = best.get("artists") or []
     if artists:
         result["artist_id"] = artists[0].get("id") or ""
+        result["spotify_artist_name"] = artists[0].get("name") or ""
     result["duration_ms"] = int(best.get("duration_ms") or 0)
 
     return result

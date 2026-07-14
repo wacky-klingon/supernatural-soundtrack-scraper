@@ -9,6 +9,7 @@ packages = [{ include = "supernatural_soundtrack_scraper" }]
 [tool.poetry.scripts]
 scrape = "supernatural_soundtrack_scraper.__main__:main"
 enrich = "supernatural_soundtrack_scraper.spotify_enrichment.enricher:main"
+dump = "supernatural_soundtrack_scraper.spotify_enrichment.metadata_dump:main"
 
 [tool.poetry.dependencies]
 python = "^3.9"

@@ -29,12 +29,14 @@ def load_enrichment_config() -> dict[str, Any]:
     config.setdefault("input_csv", "")
     config.setdefault("output_json", "")
     config.setdefault("output_csv", "")
+    config.setdefault("metadata_csv", "")
     config.setdefault("taxonomy_path", "")
     config["input_csv"] = os.getenv("INPUT_CSV", config["input_csv"])
     config["output_json"] = os.getenv("OUTPUT_JSON", config["output_json"])
     config["output_csv"] = os.getenv("OUTPUT_CSV", config["output_csv"])
+    config["metadata_csv"] = os.getenv("METADATA_CSV", config["metadata_csv"])
     config["taxonomy_path"] = os.getenv("TAXONOMY_PATH", config["taxonomy_path"])
-    for key in ("input_csv", "output_json", "output_csv", "taxonomy_path"):
+    for key in ("input_csv", "output_json", "output_csv", "metadata_csv", "taxonomy_path"):
         if config[key]:
             config[key] = _resolve_path(config[key])
     config["spotify_client_id"] = os.getenv("SPOTIFY_CLIENT_ID", "")

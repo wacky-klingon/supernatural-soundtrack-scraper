@@ -29,6 +29,8 @@ Two outputs; both are one row (or one object) per (season, episode, song, artist
 | `spotify_present` | Step 2 | `true` / `false` |
 | `spotify_track_id` | Step 2 | Spotify track ID |
 | `spotify_uri` | Step 2 | `spotify:track:...` |
+| `spotify_track_name` | Step 2 | Spotify's canonical track name (from track.name) |
+| `spotify_artist_name` | Step 2 | Spotify's canonical primary artist name |
 | `match_confidence` | Step 2 | Optional score |
 | `album_id` | Step 2 | Spotify album ID |
 | `album_name` | Step 2 | From track.album.name |
@@ -43,7 +45,9 @@ Two outputs; both are one row (or one object) per (season, episode, song, artist
 
 Songs without a Spotify match keep `spotify_present=false`, Spotify fields empty, `genres`/`tags` empty arrays; `last_updated` still set. Downstream consumers that need tags or genres use the JSON file.
 
-**CSV (derived view):** e.g. `Spotify_supernatural.csv` — same rows, scalar columns only. Generated from the JSON after each run. Contains input columns plus: `spotify_present`, `spotify_track_id`, `spotify_uri`, `match_confidence`, `album_id`, `album_name`, `album_release_date`, `release_year`, `artist_id`, `duration_ms`, `last_updated`. No `genres`, `tags`, or `tag_source` (avoids CSV delimiter issues and keeps the file spreadsheet-safe).
+**CSV (derived view):** e.g. `Spotify_supernatural.csv` — same rows, scalar columns only. Generated from the JSON after each run. Contains input columns plus: `spotify_present`, `spotify_track_id`, `spotify_uri`, `spotify_track_name`, `spotify_artist_name`, `match_confidence`, `album_id`, `album_name`, `album_release_date`, `release_year`, `artist_id`, `duration_ms`, `last_updated`. No `genres`, `tags`, or `tag_source` (avoids CSV delimiter issues and keeps the file spreadsheet-safe).
+
+**Metadata dump (`poetry run dump`):** e.g. `Spotify_metadata_dump.csv` — derived from the JSON on demand. One row per unique found track (`spotify_present=true`, deduped by track ID, first appearance wins) with `genres` and `tags` flattened to `"; "`-joined strings. For browsing/spreadsheets; the JSON stays the source of truth.
 
 ---
 

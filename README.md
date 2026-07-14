@@ -63,6 +63,14 @@ poetry run enrich
 
 Writes JSON (source of truth, with genres/tags arrays) and a derived CSV (scalar columns only). Idempotent: re-runs skip (song, artist) pairs already in the output. See [SPOTIFY_ENRICHMENT.md](SPOTIFY_ENRICHMENT.md).
 
+### Metadata dump
+
+Requires the enrichment JSON (run `enrich` first). Writes a CSV of unique tracks found on Spotify — Spotify track/artist names, album, release date/year, genres and tags flattened to `"; "`-joined strings, IDs, URI, duration. Deduped by track ID (first appearance wins). Output path is `metadata_csv` in `config/enrichment.yaml` (override with `METADATA_CSV`).
+
+```bash
+poetry run dump
+```
+
 ## What It Does
 
 - Calls the MediaWiki API
@@ -74,12 +82,12 @@ Writes JSON (source of truth, with genres/tags arrays) and a derived CSV (scalar
 
 | Path | Description |
 |------|-------------|
-| `supernatural_soundtrack_scraper/` | Package: `core`, `utils`, `cli`, `spotify_enrichment` (presence matcher, taxonomy tagger, enricher) |
+| `supernatural_soundtrack_scraper/` | Package: `core`, `utils`, `cli`, `spotify_enrichment` (presence matcher, taxonomy tagger, enricher, metadata dump) |
 | `tests/` | Tests: `test_core.py`, `test_utils.py` |
 | `config/scraper.yaml` | Scraper config (API URL, page title, output paths) |
 | `config/enrichment.yaml` | Enrichment paths (input CSV, output JSON/CSV, taxonomy) |
 | `config/taxonomy.yaml` | Taxonomy: genres, moods, mood rules for tagging |
-| `pyproject.toml` | Poetry project, scripts: `scrape`, `enrich` |
+| `pyproject.toml` | Poetry project, scripts: `scrape`, `enrich`, `dump` |
 | `poetry.lock` | Locked dependency versions (commit this) |
 | [docs/SCRAPER_IMPROVEMENTS_PLAN.md](docs/SCRAPER_IMPROVEMENTS_PLAN.md) | Types, config-driven paths, Pydantic I/O (completed) |
 | `SPOTIFY_ENRICHMENT.md` | Spotify enrichment design, pipeline, and data model |

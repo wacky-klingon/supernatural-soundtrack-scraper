@@ -62,6 +62,8 @@ class EnrichedRecord(BaseModel):
     spotify_present: bool = False
     spotify_track_id: str = ""
     spotify_uri: str = ""
+    spotify_track_name: str = ""
+    spotify_artist_name: str = ""
     match_confidence: float = 0.0
     album_id: str = ""
     album_name: str = ""
@@ -93,6 +95,8 @@ class EnrichedRecord(BaseModel):
             "spotify_present": self.spotify_present,
             "spotify_track_id": self.spotify_track_id,
             "spotify_uri": self.spotify_uri,
+            "spotify_track_name": self.spotify_track_name,
+            "spotify_artist_name": self.spotify_artist_name,
             "match_confidence": self.match_confidence,
             "album_id": self.album_id,
             "album_name": self.album_name,

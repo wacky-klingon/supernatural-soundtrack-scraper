@@ -122,6 +122,8 @@ def run_enrichment() -> tuple[str, str]:
             "spotify_present": match_result["spotify_present"],
             "spotify_track_id": match_result["spotify_track_id"],
             "spotify_uri": match_result["spotify_uri"],
+            "spotify_track_name": match_result["spotify_track_name"],
+            "spotify_artist_name": match_result["spotify_artist_name"],
             "match_confidence": match_result["match_confidence"],
             "album_id": match_result["album_id"],
             "album_name": match_result["album_name"],
@@ -152,6 +154,8 @@ def run_enrichment() -> tuple[str, str]:
             spotify_present=en.get("spotify_present", False),
             spotify_track_id=en.get("spotify_track_id", ""),
             spotify_uri=en.get("spotify_uri", ""),
+            spotify_track_name=en.get("spotify_track_name", ""),
+            spotify_artist_name=en.get("spotify_artist_name", ""),
             match_confidence=float(en.get("match_confidence") or 0),
             album_id=en.get("album_id", ""),
             album_name=en.get("album_name", ""),
@@ -181,7 +185,8 @@ def run_enrichment() -> tuple[str, str]:
         else [
             "season", "episode_code", "episode_title", "overall_episode", "song", "artist",
             "note", "source_url", "source_api_url",
-            "spotify_present", "spotify_track_id", "spotify_uri", "match_confidence",
+            "spotify_present", "spotify_track_id", "spotify_uri", "spotify_track_name",
+            "spotify_artist_name", "match_confidence",
             "album_id", "album_name", "album_release_date", "release_year", "artist_id",
             "duration_ms", "last_updated",
         ]
